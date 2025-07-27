@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SathiBuy - Smart Group Buying for Street Vendors</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Main Content */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .left-panel, .right-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .panel-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* AI Features */
+        .ai-feature {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .ai-icon {
+            font-size: 2rem;
+            opacity: 0.9;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border-left: 4px solid #667eea;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .card-title {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* Chat Interface */
+        .chat-container {
+            background: #f8f9fa;
+            border-radius: 15px;
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            border-radius: 15px 15px 0 0;
+            font-weight: 600;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+        }
+
+        .chat-message {
+            background: white;
+            padding: 10px 15px;
+            border-radius: 20px;
+            margin-bottom: 10px;
+            max-width: 80%;
+        }
+
+        .chat-message.ai {
+            background: #e3f2fd;
+            margin-left: auto;
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 15px;
+            gap: 10px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Loading Animation */
+        .loading-dots {
+            display: inline-block;
+        }
+
+        .loading-dots:after {
+            content: '';
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60%, 100% { content: '...'; }
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #28a745;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-shopping-cart"></i>
+                SathiBuy
+            </div>
+            <div class="nav-buttons">
+                <a href="#" class="btn btn-secondary">
+                    <i class="fas fa-user"></i>
+                    Profile
+                </a>
+                <a href="#" class="btn btn-primary">
+                    <i class="fas fa-plus"></i>
+                    Create Request
+                </a>
+            </div>
+        </header>
+
+        <!-- AI Feature Banner -->
+        <div class="ai-feature">
+            <div class="ai-icon">🤖</div>
+            <div>
+                <h3>AI-Powered Smart Matching</h3>
+                <p>Our AI automatically finds the best group buying opportunities and suppliers for you!</p>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">₹2,45,000</div>
+                <div class="stat-label">Total Savings</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">156</div>
+                <div class="stat-label">Active Vendors</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">89</div>
+                <div class="stat-label">Successful Groups</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">4.8★</div>
+                <div class="stat-label">Average Rating</div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Left Panel - Create/Join Requests -->
+            <div class="left-panel">
+                <h2 class="panel-title">
+                    <i class="fas fa-handshake"></i>
+                    Group Buying Requests
+                </h2>
+
+                <!-- Create New Request Form -->
+                <div class="form-group">
+                    <label class="form-label">Product Name</label>
+                    <input type="text" class="form-input" id="productName" placeholder="e.g., Basmati Rice">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Quantity Needed (kg)</label>
+                    <input type="number" class="form-input" id="quantity" placeholder="e.g., 10">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Category</label>
+                    <select class="form-select" id="category">
+                        <option>Select Category</option>
+                        <option>Grains & Cereals</option>
+                        <option>Vegetables</option>
+                        <option>Fruits</option>
+                        <option>Spices</option>
+                        <option>Oil & Ghee</option>
+                        <option>Dairy Products</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Expected Delivery</label>
+                    <input type="date" class="form-input" id="deliveryDate">
+                </div>
+
+                <button class="btn btn-primary" onclick="createRequest()" style="width: 100%;">
+                    <i class="fas fa-robot"></i>
+                    Create Smart Request
+                </button>
+
+                <!-- AI Suggestions -->
+                <div id="aiSuggestions" style="margin-top: 20px;"></div>
+            </div>
+
+            <!-- Right Panel - Active Groups & AI Chat -->
+            <div class="right-panel">
+                <h2 class="panel-title">
+                    <i class="fas fa-users"></i>
+                    Active Groups
+                </h2>
+
+                <!-- Active Group Cards -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Basmati Rice - 50kg</div>
+                        <div class="status-badge status-active">85% Complete</div>
+                    </div>
+                    <p><strong>Current:</strong> 42.5kg | <strong>Target:</strong> 50kg</p>
+                    <p><strong>Price:</strong> ₹45/kg (Save ₹8/kg)</p>
+                    <p><strong>Members:</strong> 7 vendors joined</p>
+                    <button class="btn btn-primary" onclick="joinGroup('rice')" style="margin-top: 10px;">
+                        <i class="fas fa-plus"></i>
+                        Join Group
+                    </button>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Tomatoes - 100kg</div>
+                        <div class="status-badge status-pending">45% Complete</div>
+                    </div>
+                    <p><strong>Current:</strong> 45kg | <strong>Target:</strong> 100kg</p>
+                    <p><strong>Price:</strong> ₹25/kg (Save ₹5/kg)</p>
+                    <p><strong>Members:</strong> 9 vendors joined</p>
+                    <button class="btn btn-primary" onclick="joinGroup('tomato')" style="margin-top: 10px;">
+                        <i class="fas fa-plus"></i>
+                        Join Group
+                    </button>
+                </div>
+
+                <!-- AI Chat Assistant -->
+                <div style="margin-top: 30px;">
+                    <h3 class="panel-title">
+                        <i class="fas fa-robot"></i>
+                        AI Assistant
+                    </h3>
+                    <div class="chat-container">
+                        <div class="chat-header">
+                            <i class="fas fa-robot"></i>
+                            SathiBuy AI Helper
+                        </div>
+                        <div class="chat-messages" id="chatMessages">
+                            <div class="chat-message ai">
+                                Hello! I found 3 potential group buying opportunities for you based on your purchase history. Would you like to see them?
+                            </div>
+                        </div>
+                        <div class="chat-input">
+                            <input type="text" id="chatInput" placeholder="Ask me about group buying..." onkeypress="handleChatKeyPress(event)">
+                            <button class="btn btn-primary" onclick="sendChatMessage()">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+
+    <script>
+        // AI-powered features simulation
+        let vendorData = {
+            history: ['rice', 'tomatoes', 'onions', 'oil'],
+            location: 'Central Market Area',
+            preferences: { organic: true, fastDelivery: true }
+        };
+
+        // Create Request with AI suggestions
+        function createRequest() {
+            const productName = document.getElementById('productName').value;
+            const quantity = document.getElementById('quantity').value;
+            const category = document.getElementById('category').value;
+
+            if (!productName || !quantity) {
+                showNotification('Please fill in all required fields!', 'error');
+                return;
+            }
+
+            // Simulate AI processing
+            showNotification('AI is analyzing your request...', 'info');
+            
+            setTimeout(() => {
+                generateAISuggestions(productName, quantity);
+                showNotification('Smart request created! AI found 3 potential matches.', 'success');
+            }, 2000);
+        }
+
+        // Generate AI suggestions
+        function generateAISuggestions(product, quantity) {
+            const suggestions = document.getElementById('aiSuggestions');
+            
+            const aiSuggestions = [
+                {
+                    type: 'Price Optimization',
+                    message: `Based on market data, ordering ${quantity}kg of ${product} in a group of 5+ vendors can save you ₹${Math.floor(Math.random() * 10) + 5}/kg`,
+                    icon: '💰'
+                },
+                {
+                    type: 'Smart Timing',
+                    message: `Best time to order: Next Tuesday (3 similar requests expected)`,
+                    icon: '⏰'
+                },
+                {
+                    type: 'Alternative Suggestion',
+                    message: `Consider organic ${product} - only ₹2/kg more but higher quality`,
+                    icon: '🌱'
+                }
+            ];
+
+            suggestions.innerHTML = '<h4 style="margin-bottom: 15px; color: #667eea;"><i class="fas fa-lightbulb"></i> AI Recommendations</h4>';
+            
+            aiSuggestions.forEach(suggestion => {
+                suggestions.innerHTML += `
+                    <div class="card" style="margin-bottom: 10px; padding: 15px;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="font-size: 1.2rem;">${suggestion.icon}</span>
+                            <div>
+                                <div style="font-weight: bold; color: #333;">${suggestion.type}</div>
+                                <div style="color: #666; font-size: 0.9rem;">${suggestion.message}</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Join Group function
+        function joinGroup(groupType) {
+            showNotification('Joining group... AI is optimizing delivery route.', 'info');
+            
+            setTimeout(() => {
+                showNotification('Successfully joined! You\'ll save ₹250 on this order.', 'success');
+                addAIChatMessage(`Great! I've added you to the ${groupType} group. Expected delivery: Tomorrow 2-4 PM. You'll save ₹250 compared to individual purchase.`);
+            }, 1500);
+        }
+
+        // Chat functionality
+        function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+
+            addUserChatMessage(message);
+            input.value = '';
+
+            // Simulate AI response
+            setTimeout(() => {
+                const aiResponse = generateAIResponse(message);
+                addAIChatMessage(aiResponse);
+            }, 1000);
+        }
+
+        function handleChatKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendChatMessage();
+            }
+        }
+
+        function addUserChatMessage(message) {
+            const chatMessages = document.getElementById('chatMessages');
+            chatMessages.innerHTML += `<div class="chat-message">${message}</div>`;
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function addAIChatMessage(message) {
+            const chatMessages = document.getElementById('chatMessages');
+            chatMessages.innerHTML += `<div class="chat-message ai"><i class="fas fa-robot" style="margin-right: 8px;"></i>${message}</div>`;
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function generateAIResponse(userMessage) {
+            const responses = {
+                'price': 'Based on current market analysis, you can save 15-30% by joining group purchases. Rice groups typically save ₹8-12 per kg.',
+                'delivery': 'Our AI optimizes delivery routes. Average delivery time is 24-48 hours for group orders, with free delivery for orders above ₹500.',
+                'groups': 'I found 5 active groups matching your preferences: Rice (85% full), Tomatoes (45% full), Oil (60% full), Onions (20% full), and Spices (75% full).',
+                'suppliers': 'I work with 25+ verified suppliers. Current best rates: Rice ₹45/kg, Tomatoes ₹25/kg, Oil ₹140/L. All suppliers rated 4.5+ stars.',
+                'help': 'I can help you find group buying opportunities, predict best prices, coordinate deliveries, and match you with nearby vendors. What would you like to know?'
+            };
+
+            // Simple keyword matching for demo
+            const lowerMessage = userMessage.toLowerCase();
+            
+            if (lowerMessage.includes('price') || lowerMessage.includes('cost') || lowerMessage.includes('save')) {
+                return responses.price;
+            } else if (lowerMessage.includes('delivery') || lowerMessage.includes('when')) {
+                return responses.delivery;
+            } else if (lowerMessage.includes('group') || lowerMessage.includes('join')) {
+                return responses.groups;
+            } else if (lowerMessage.includes('supplier') || lowerMessage.includes('vendor')) {
+                return responses.suppliers;
+            } else {
+                return responses.help;
+            }
+        }
+
+        // Notification system
+        function showNotification(message, type = 'info') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification show ${type}`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Initialize with AI welcome message
+        window.onload = function() {
+            setTimeout(() => {
+                addAIChatMessage('Welcome! I\'ve analyzed your area and found 12 active group buying opportunities. Would you like me to show the top 3 matches for your business type?');
+            }, 1000);
+
+            // Set today's date as default
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('deliveryDate').value = today;
+        };
+
+        // Simulate real-time updates
+        setInterval(() => {
+            const cards = document.querySelectorAll('.status-badge');
+            cards.forEach(card => {
+                if (card.textContent.includes('%')) {
+                    const currentPercent = parseInt(card.textContent);
+                    if (currentPercent < 100 && Math.random() > 0.7) {
+                        const newPercent = Math.min(100, currentPercent + Math.floor(Math.random() * 5) + 1);
+                        card.textContent = `${newPercent}% Complete`;
+                        
+                        if (newPercent >= 100) {
+                            card.className = 'status-badge status-active';
+                            showNotification('🎉 Group buying target reached! Order will be placed soon.', 'success');
+                        }
+                    }
+                }
+            });
+        }, 15000);
+    </script>
+</body>
+</html>
